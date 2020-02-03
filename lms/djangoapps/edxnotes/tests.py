@@ -11,6 +11,7 @@ from unittest import skipUnless
 import ddt
 import jwt
 import six
+from crum import impersonate
 from six import text_type
 from six.moves.urllib.parse import urlparse, parse_qs  # pylint: disable=import-error
 from django.conf import settings
@@ -144,10 +145,11 @@ class EdxNotesDecoratorTest(ModuleStoreTestCase):
                 "eventStringLimit": settings.TRACK_MAX_EVENT / 6,
             },
         }
-        self.assertEqual(
-            problem.get_html(),
-            render_to_string("edxnotes_wrapper.html", expected_context),
-        )
+        with impersonate(user):
+            self.assertEqual(
+                problem.get_html(),
+                render_to_string("edxnotes_wrapper.html", expected_context),
+            )
 
     @patch.dict("django.conf.settings.FEATURES", {"ENABLE_EDXNOTES": True})
     def test_edxnotes_disabled_if_edxnotes_flag_is_false(self):

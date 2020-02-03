@@ -178,6 +178,7 @@ class CacheInvalidationManager:
         self.cache_time = cache_time
         self.keys = set()
 
+    # pylint: disable=unused-argument
     def invalidate(self, **kwargs):
         """
         Invalidate all keys tracked by the manager.
@@ -193,7 +194,7 @@ class CacheInvalidationManager:
         self.keys.add(cache_key)
 
         @functools.wraps(func)
-        def decorator(*args, **kwargs):
+        def decorator(*args, **kwargs):  # pylint: disable=unused-argument,missing-docstring
             result = TieredCache.get_cached_response(cache_key)
             if result.is_found:
                 return result.value

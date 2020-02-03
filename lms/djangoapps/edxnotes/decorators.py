@@ -6,6 +6,7 @@ Decorators related to edXNotes.
 import json
 
 import six
+from crum import get_current_user
 from django.conf import settings
 
 from edxmako.shortcuts import render_to_string
@@ -22,7 +23,13 @@ def edxnotes(cls):
         Returns raw html for the component.
         """
         # Import is placed here to avoid model import at project startup.
-        from edxnotes.helpers import generate_uid, get_edxnotes_id_token, get_public_endpoint, get_token_url, is_feature_enabled
+        from edxnotes.helpers import (
+            generate_uid,
+            get_edxnotes_id_token,
+            get_public_endpoint,
+            get_token_url,
+            is_feature_enabled
+        )
 
         runtime = getattr(self, 'descriptor', self).runtime
         if not hasattr(runtime, 'modulestore'):
@@ -36,7 +43,8 @@ def edxnotes(cls):
         # - Harvard Annotation Tool is enabled for the course
         # - the feature flag or `edxnotes` setting of the course is set to False
         # - the user is not authenticated
-        user = self.runtime.get_real_user(self.runtime.anonymous_student_id)
+
+        user = get_current_user()
 
         if is_studio or not is_feature_enabled(course, user):
             return original_get_html(self, *args, **kwargs)
