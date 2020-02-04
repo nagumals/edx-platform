@@ -67,7 +67,7 @@ django-ipware==2.1.0
 django-js-asset==1.2.2    # via django-mptt
 django-method-override==0.2.0
 django-model-utils
-django-mptt==0.11.0
+django-mptt
 django-multi-email-field==0.5.1  # via edx-enterprise
 django-mysql==3.3.0
 git+https://github.com/edx/django-oauth-plus.git@b9b64a3ac24fd11f471763c88462bbf3c53e46e6#egg=django-oauth-plus==2.2.9.edx-4
